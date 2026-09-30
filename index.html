@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090909">
+<title>FF Sensitivity 200</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#070707;
+    color:#fff;
+}
+
+header{
+    text-align:center;
+    padding:25px 15px;
+    background:
+        radial-gradient(circle at top,#6b0000,#160000 45%,#070707 75%);
+    border-bottom:2px solid #ff2020;
+}
+
+.logo{
+    font-size:31px;
+    font-weight:900;
+    color:#ff2929;
+    text-shadow:0 0 18px #ff0000;
+}
+
+.subtitle{
+    color:#ccc;
+    margin-top:8px;
+}
+
+.container{
+    width:100%;
+    max-width:680px;
+    margin:auto;
+    padding:18px;
+}
+
+.card{
+    background:#111;
+    border:1px solid #292929;
+    border-radius:18px;
+    padding:18px;
+    margin-bottom:18px;
+    box-shadow:0 8px 25px #000;
+}
+
+h2{
+    margin-bottom:15px;
+    font-size:20px;
+}
+
+label{
+    display:block;
+    margin:13px 0 7px;
+    color:#ddd;
+    font-weight:bold;
+}
+
+select{
+    width:100%;
+    padding:14px;
+    background:#080808;
+    color:#fff;
+    border:1px solid #3a3a3a;
+    border-radius:11px;
+    font-size:16px;
+}
+
+.profiles{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.profile{
+    padding:15px 8px;
+    border-radius:12px;
+    border:1px solid #333;
+    background:#0a0a0a;
+    color:#fff;
+    font-weight:bold;
+    cursor:pointer;
+    text-align:center;
+}
+
+.profile.active{
+    background:#b40000;
+    border-color:#ff2929;
+    box-shadow:0 0 15px #ff000055;
+}
+
+.sensitivity{
+    margin-bottom:17px;
+}
+
+.sensitivity-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:6px;
+}
+
+.sensitivity-name{
+    font-weight:bold;
+}
+
+.value{
+    color:#ff3333;
+    font-size:20px;
+    font-weight:900;
+}
+
+input[type=range]{
+    width:100%;
+    accent-color:#ff2222;
+    cursor:pointer;
+}
+
+.range-numbers{
+    display:flex;
+    justify-content:space-between;
+    color:#777;
+    font-size:11px;
+}
+
+.result{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.box{
+    background:#080808;
+    border-radius:13px;
+    padding:15px;
+    border-left:4px solid #ff2424;
+}
+
+.box span{
+    color:#888;
+    font-size:13px;
+}
+
+.box strong{
+    display:block;
+    color:#ff3333;
+    font-size:25px;
+    margin-top:4px;
+}
+
+button{
+    border:0;
+    border-radius:12px;
+    padding:15px;
+    font-weight:bold;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.primary{
+    width:100%;
+    margin-top:12px;
+    background:#d90000;
+    color:white;
+}
+
+.primary:hover{
+    background:#ff1d1d;
+}
+
+.secondary{
+    width:100%;
+    margin-top:10px;
+    background:#222;
+    color:#fff;
+}
+
+.info{
+    background:#17110d;
+    color:#ffc36b;
+    border-radius:12px;
+    padding:13px;
+    margin-top:15px;
+    font-size:13px;
+    line-height:1.5;
+}
+
+footer{
+    text-align:center;
+    color:#666;
+    padding:25px;
+    font-size:12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">🔥 FF SENSITIVITY 200</div>
+    <div class="subtitle">
+        Configurações de sensibilidade para facilitar seus headshots
+    </div>
+</header>
+
+<div class="container">
+
+    <!-- APARELHO -->
+    <div class="card">
+
+        <h2>📱 Escolha seu aparelho</h2>
+
+        <label>Marca</label>
+
+        <select id="brand" onchange="loadModels()">
+            <option value="motorola">Motorola</option>
+            <option value="samsung">Samsung</option>
+            <option value="xiaomi">Xiaomi</option>
+            <option value="redmi">Redmi</option>
+            <option value="realme">Realme</option>
+            <option value="infinix">Infinix</option>
+            <option value="apple">iPhone</option>
+            <option value="asus">ASUS</option>
+            <option value="poco">POCO</option>
+            <option value="outros">Outros</option>
+        </select>
+
+        <label>Modelo</label>
+
+        <select id="model"></select>
+
+    </div>
+
+    <!-- PERFIL -->
+    <div class="card">
+
+        <h2>🎯 Escolha o perfil</h2>
+
+        <div class="profiles">
+
+            <div class="profile active"
+                 onclick="changeProfile(this,'equilibrada')">
+                ⚖️ Equilibrada
+            </div>
+
+            <div class="profile"
+                 onclick="changeProfile(this,'rush')">
+                ⚡ Rush
+            </div>
+
+            <div class="profile"
+                 onclick="changeProfile(this,'curta')">
+                🔴 Curta
+            </div>
+
+            <div class="profile"
+                 onclick="changeProfile(this,'media')">
+                🎯 Média
+            </div>
+
+            <div class="profile"
+                 onclick="changeProfile(this,'longa')">
+                🔭 Longa
+            </div>
+
+            <div class="profile"
+                 onclick="changeProfile(this,'capa')">
+                🔥 Headshot
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SENSIBILIDADE -->
+    <div class="card">
+
+        <h2>🔥 Sensibilidade — 0 a 200</h2>
+
+        <div class="sensitivity">
+            <div class="sensitivity-top">
+                <span class="sensitivity-name">Geral</span>
+                <span class="value" id="geralValue">190</span>
+            </div>
+
+            <input id="geral" type="range"
+                   min="0" max="200" value="190"
+                   oninput="updateValue('geral')">
+
+            <div class="range-numbers">
+                <span>0</span><span>50</span><span>100</span>
+                <span>150</span><span>200</span>
+            </div>
+        </div>
+
+
+        <div class="sensitivity">
+            <div class="sensitivity-top">
+                <span class="sensitivity-name">Ponto Vermelho</span>
+                <span class="value" id="redValue">185</span>
+            </div>
+
+            <input id="red" type="range"
+                   min="0" max="200" value="185"
+                   oninput="updateValue('red')">
+
+            <div class="range-numbers">
+                <span>0</span><span>50</span><span>100</span>
+                <span>150</span><span>200</span>
+            </div>
+        </div>
+
+
+        <div class="sensitivity">
+            <div class="sensitivity-top">
+                <span class="sensitivity-name">Mira 2x</span>
+                <span class="value" id="x2Value">175</span>
+            </div>
+
+            <input id="x2" type="range"
+                   min="0" max="200" value="175"
+                   oninput="updateValue('x2')">
+
+            <div class="range-numbers">
+                <span>0</span><span>50</span><span>100</span>
+                <span>150</span><span>200</span>
+            </div>
+        </div>
+
+
+        <div class="sensitivity">
+            <div class="sensitivity-top">
+                <span class="sensitivity-name">Mira 4x</span>
+                <span class="value" id="x4Value">165</span>
+            </div>
+
+            <input id="x4" type="range"
+                   min="0" max="200" value="165"
+                   oninput="updateValue('x4')">
+
+            <div class="range-numbers">
+                <span>0</span><span>50</span><span>100</span>
+                <span>150</span><span>200</span>
+            </div>
+        </div>
+
+
+        <div class="sensitivity">
+            <div class="sensitivity-top">
+                <span class="sensitivity-name">Mira AWM</span>
+                <span class="value" id="awmValue">110</span>
+            </div>
+
+            <input id="awm" type="range"
+                   min="0" max="200" value="110"
+                   oninput="updateValue('awm')">
+
+            <div class="range-numbers">
+                <span>0</span><span>50</span><span>100</span>
+                <span>150</span><span>200</span>
+            </div>
+        </div>
+
+
+        <div class="sensitivity">
+            <div class="sensitivity-top">
+                <span class="sensitivity-name">Olhadinha</span>
+                <span class="value" id="lookValue">180</span>
+            </div>
+
+            <input id="look" type="range"
+                   min="0" max="200" value="180"
+                   oninput="updateValue('look')">
+
+            <div class="range-numbers">
+                <span>0</span><span>50</span><span>100</span>
+                <span>150</span><span>200</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- OUTRAS CONFIGURAÇÕES -->
+    <div class="card">
+
+        <h2>⚙️ Configurações auxiliares</h2>
+
+        <div class="result">
+
+            <div class="box">
+                <span>DPI sugerido</span>
+                <strong id="dpi">450</strong>
+            </div>
+
+            <div class="box">
+                <span>Botão de tiro</span>
+                <strong id="fire">50%</strong>
+            </div>
+
+            <div class="box">
+                <span>Taxa de mira</span>
+                <strong>Alta</strong>
+            </div>
+
+            <div class="box">
+                <span>Objetivo</span>
+                <strong>Capa</strong>
+            </div>
+
+        </div>
+
+        <button class="primary" onclick="copyConfig()">
+            📋 COPIAR CONFIGURAÇÃO
+        </button>
+
+        <button class="secondary" onclick="resetConfig()">
+            🔄 RESTAURAR CONFIGURAÇÃO
+        </button>
+
+        <div class="info">
+            ⚠️ Os valores de 0–200 são configurações sugeridas.
+            O resultado pode variar conforme aparelho, tela, FPS,
+            taxa de atualização e estilo de jogo. Não existe configuração
+            que garanta headshot em todos os disparos.
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    FF Sensitivity 200 • Configurador de sensibilidade
+</footer>
+
+
+<script>
+
+const models = {
+
+    motorola:[
+        "Moto G04",
+        "Moto G05",
+        "Moto G06",
+        "Moto G14",
+        "Moto G15",
+        "Moto G24",
+        "Moto G34",
+        "Moto G35",
+        "Moto G54",
+        "Moto G55",
+        "Moto G64",
+        "Moto G73",
+        "Moto G84",
+        "Moto G85",
+        "Moto Edge 30",
+        "Moto Edge 40",
+        "Moto Edge 50",
+        "Moto Edge 60"
+    ],
+
+    samsung:[
+        "Galaxy A05",
+        "Galaxy A05s",
+        "Galaxy A06",
+        "Galaxy A14",
+        "Galaxy A15",
+        "Galaxy A16",
+        "Galaxy A24",
+        "Galaxy A25",
+        "Galaxy A34",
+        "Galaxy A35",
+        "Galaxy A54",
+        "Galaxy A55",
+        "Galaxy S21",
+        "Galaxy S22",
+        "Galaxy S23",
+        "Galaxy S24",
+        "Galaxy S25"
+    ],
+
+    xiaomi:[
+        "Xiaomi 12",
+        "Xiaomi 13",
+        "Xiaomi 14",
+        "Xiaomi 14T",
+        "Xiaomi 15"
+    ],
+
+    redmi:[
+        "Redmi 9",
+        "Redmi 10",
+        "Redmi 12C",
+        "Redmi 13C",
+        "Redmi Note 11",
+        "Redmi Note 12",
+        "Redmi Note 13",
+        "Redmi Note 14"
+    ],
+
+    realme:[
+        "Realme C30",
+        "Realme C35",
+        "Realme C51",
+        "Realme C53",
+        "Realme C55",
+        "Realme C61",
+        "Realme C65",
+        "Realme 10",
+        "Realme 11",
+        "Realme 12"
+    ],
+
+    infinix:[
+        "Hot 11",
+        "Hot 12",
+        "Hot 20",
+        "Hot 30",
+        "Hot 40",
+        "Hot 50",
+        "Note 12",
+        "Note 30"
+    ],
+
+    apple:[
+        "iPhone 11",
+        "iPhone 12",
+        "iPhone 13",
+        "iPhone 14",
+        "iPhone 15",
+        "iPhone 16",
+        "iPhone 17"
+    ],
+
+    asus:[
+        "ROG Phone 5",
+        "ROG Phone 6",
+        "ROG Phone 7",
+        "ROG Phone 8",
+        "ROG Phone 9",
+        "Zenfone 9",
+        "Zenfone 10",
+        "Zenfone 11"
+    ],
+
+    poco:[
+        "POCO X3",
+        "POCO X4",
+        "POCO X5",
+        "POCO X6",
+        "POCO X7",
+        "POCO F4",
+        "POCO F5",
+        "POCO F6"
+    ],
+
+    outros:[
+        "Outro aparelho"
+    ]
+};
+
+
+/*
+  Perfis:
+  Geral
+  Ponto Vermelho
+  2x
+  4x
+  AWM
+  Olhadinha
+  DPI
+  Botão
+*/
+
+const profiles = {
+
+    equilibrada:[190,185,175,165,110,180,450,50],
+
+    rush:[200,198,190,180,120,195,500,53],
+
+    curta:[200,200,195,175,105,195,520,55],
+
+    media:[195,190,182,172,115,185,470,50],
+
+    longa:[175,170,160,175,100,160,420,45],
+
+    capa:[200,198,192,180,115,195,500,52]
+};
+
+
+function loadModels(){
+
+    const brand =
+        document.getElementById("brand").value;
+
+    const model =
+        document.getElementById("model");
+
+    model.innerHTML="";
+
+    models[brand].forEach(name=>{
+
+        const option =
+            document.createElement("option");
+
+        option.value=name;
+        option.textContent=name;
+
+        model.appendChild(option);
+
+    });
+}
+
+
+function changeProfile(element,profile){
+
+    document
+        .querySelectorAll(".profile")
+        .forEach(item=>{
+            item.classList.remove("active");
+        });
+
+    element.classList.add("active");
+
+    const values =
+        profiles[profile];
+
+    setSlider("geral",values[0]);
+    setSlider("red",values[1]);
+    setSlider("x2",values[2]);
+    setSlider("x4",values[3]);
+    setSlider("awm",values[4]);
+    setSlider("look",values[5]);
+
+    document.getElementById("dpi")
+        .textContent=values[6];
+
+    document.getElementById("fire")
+        .textContent=values[7]+"%";
+}
+
+
+function setSlider(id,value){
+
+    document.getElementById(id).value=value;
+
+    document.getElementById(id+"Value")
+        .textContent=value;
+}
+
+
+function updateValue(id){
+
+    const value =
+        document.getElementById(id).value;
+
+    document.getElementById(id+"Value")
+        .textContent=value;
+}
+
+
+function copyConfig(){
+
+    const model =
+        document.getElementById("model").value;
+
+    const config = {
+
+        "Geral":
+            document.getElementById("geral").value,
+
+        "Ponto Vermelho":
+            document.getElementById("red").value,
+
+        "Mira 2x":
+            document.getElementById("x2").value,
+
+        "Mira 4x":
+            document.getElementById("x4").value,
+
+        "Mira AWM":
+            document.getElementById("awm").value,
+
+        "Olhadinha":
+            document.getElementById("look").value,
+
+        "DPI":
+            document.getElementById("dpi").textContent,
+
+        "Botão":
+            document.getElementById("fire").textContent
+    };
+
+    const text =
+`🔥 FF SENSITIVITY 200
+
+📱 Aparelho: ${model}
+
+🎯 SENSIBILIDADE
+
+Geral: ${config["Geral"]}/200
+Ponto Vermelho: ${config["Ponto Vermelho"]}/200
+Mira 2x: ${config["Mira 2x"]}/200
+Mira 4x: ${config["Mira 4x"]}/200
+Mira AWM: ${config["Mira AWM"]}/200
+Olhadinha: ${config["Olhadinha"]}/200
+
+⚙️ AUXILIARES
+
+DPI: ${config["DPI"]}
+Botão de tiro: ${config["Botão"]}
+
+🔥 Perfil focado em headshot`;
+
+    navigator.clipboard
+        .writeText(text)
+        .then(()=>{
+            alert("✅ Configuração copiada!");
+        })
+        .catch(()=>{
+            alert("Selecione e copie a configuração manualmente.");
+        });
+}
+
+
+function resetConfig(){
+
+    setSlider("geral",190);
+    setSlider("red",185);
+    setSlider("x2",175);
+    setSlider("x4",165);
+    setSlider("awm",110);
+    setSlider("look",180);
+
+    document.getElementById("dpi")
+        .textContent="450";
+
+    document.getElementById("fire")
+        .textContent="50%";
+}
+
+
+loadModels();
+
+</script>
+
+</body>
+</html>
